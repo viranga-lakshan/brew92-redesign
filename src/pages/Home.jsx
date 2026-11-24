@@ -39,6 +39,7 @@ export default function Home() {
     const ctx = gsap.context(() => {
       const root_ = root.current;
       const setTemp = (v, arcEl, readout, ticks) => {
+        if (!arcEl) return; // the page may already be unmounting when GSAP rewinds on cleanup
         arcEl.style.strokeDashoffset = CIRC * 0.75 * (1 - v / 100);
         if (readout) readout.forEach((r) => (r.textContent = Math.round(v)));
         ticks.forEach((tk) => tk.classList.toggle('on', +tk.dataset.v <= v));
@@ -47,7 +48,7 @@ export default function Home() {
       const ticks = [...root_.querySelectorAll('.hero .ticks line')];
       const heroRead = [...root_.querySelectorAll('.hero [data-temp]')];
       const o = { v: 18 };
-      gsap.to(o, { v: 92, duration: 3.2, ease: 'power3.out', delay: 0.4, onUpdate: () => setTemp(o.v, arc.current, heroRead, ticks) });
+      gsap.to(o, { v: 92, duration: 3.2, ease: 'power3.out', delay: 0.4, onUpdate: () => setTemp(o.v, arc.current || root_.querySelector('.hero .dial-arc'), heroRead, ticks) });
       const tl = gsap.timeline({ defaults: { ease: 'power4.out' } });
       tl.from('.hero .w', { yPercent: 118, duration: 1.2, stagger: 0.09 })
         .from('.hero .fade', { opacity: 0, y: 26, duration: 0.9, stagger: 0.1 }, '-=0.7')
@@ -140,6 +141,7 @@ export default function Home() {
       </section>
 
       {/* ================= PINNED STORY ================= */}
+      <div className="story-wrap">{/* stable parent: GSAP wraps the pinned .story in its own spacer, React must still own this node */}
       <section className="story">
         <div className="story-in">
           <div className="story-l">
@@ -159,6 +161,7 @@ export default function Home() {
           </div>
         </div>
       </section>
+      </div>
 
       {/* ================= SHOP ================= */}
       <section className="shop-sec wrap">
