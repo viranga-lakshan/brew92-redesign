@@ -2,7 +2,7 @@
 
 Live site: https://viranga-lakshan.github.io/brew92-redesign/
 
-- The built website is at the top level of this repo (what GitHub Pages serves).
-- The editable source (React + Vite + GSAP) is in `app/`. To rebuild: `cd app && npm install && npm run build`, then copy `dist/` to the repo root.
+React + Vite + GSAP. Pushing to `main` builds and deploys automatically (GitHub Actions -> Pages).
+Local: `npm install && npm run dev`.
 
 Design concept only. All photography and product data belong to Brew92.
